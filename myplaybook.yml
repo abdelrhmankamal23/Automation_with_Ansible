@@ -1,0 +1,82 @@
+---
+- name: Configure Apache Web Server
+  hosts: nti
+  gather_facts: true
+
+  vars_files:
+    - ./vars.yml
+
+  tasks:
+
+    - name: task0 check os
+      fail:
+        msg: "Not REDHAT OS"
+      when: ansible_facts.distribution != "RedHat"
+
+    - name: task2 install Apache web server
+      dnf:
+        name: httpd
+        state: present
+
+    - name: Check if httpd.conf exists
+      stat:
+        path: "{{ httpd_conf }}"
+      register: httpd_conf_stat
+
+    - name: Trigger backup handler if httpd.conf exists
+      debug:
+        msg: "Triggering backup handler"
+      when: httpd_conf_stat.stat.exists
+      notify: Backup httpd configuration
+
+    - name: task3 enable Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: task4 open HTTP service in firewall
+      firewalld:
+        service: http
+        state: enabled
+        permanent: yes
+        immediate: yes
+
+    - name: task5 upload index.html page
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+
+    - name: task6 change Listen port from 80 to 88 in httpd.conf
+      lineinfile:
+        path: "{{ httpd_conf }}"
+        regexp: '^Listen 80'
+        line: 'Listen 88'
+        state: present
+
+    - name: task7 open port 88 in firewall
+      firewalld:
+        port: 88/tcp
+        state: enabled
+        permanent: yes
+        immediate: yes
+
+    - name: task8 allow Apache to use port 88 in SELinux
+      command: semanage port -m -t http_port_t -p tcp 88
+      args:
+        warn: false
+      ignore_errors: yes
+
+    - name: task9 restart Apache service
+      service:
+        name: httpd
+        state: restarted
+
+  handlers:
+
+    - name: Backup httpd configuration
+      fetch:
+        src: "{{ httpd_conf }}"
+        dest: "{{ backup_dir }}"
+        flat: no
+      ignore_errors: yes

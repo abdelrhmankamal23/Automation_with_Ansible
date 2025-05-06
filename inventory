@@ -1,0 +1,17 @@
+[ws]
+workstation
+
+[webservers]
+servera
+serverb
+
+[dbservers]
+serverc
+serverd
+
+
+[nti:children]
+webservers
+dbservers
+
+
