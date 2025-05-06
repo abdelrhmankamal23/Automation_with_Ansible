@@ -1,0 +1,25 @@
+galaxy_info:
+  author: Abdelrhman Mohamed
+  description: Role to backup then configure Apache to host a website on port 88
+  company: National Telecommunication Institute
+  license: GPL-2.0-or-later
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: AIX
+      versions:
+        - "7.2"
+
+  galaxy_tags:
+    - apache
+    - httpd
+    - web
+    - website
+    - selinux
+    - firewall
+    - rhel
+    - port88
+    - deployment
+    - nti
+
+dependencies: []

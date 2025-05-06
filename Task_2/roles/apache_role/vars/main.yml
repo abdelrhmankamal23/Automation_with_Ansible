@@ -1,0 +1,5 @@
+---
+# vars file for apache_role
+
+httpd_conf: /etc/httpd/conf/httpd.conf
+backup_dir: /home/student/backupdir

@@ -1,0 +1,9 @@
+---
+- name: Configure Apache Web Server
+  hosts: nti
+  gather_facts: true
+  
+  roles:
+    -apache_role
+
+
