@@ -4,6 +4,6 @@
   gather_facts: true
   
   roles:
-    -apache_role
+    - apache_role
 
 

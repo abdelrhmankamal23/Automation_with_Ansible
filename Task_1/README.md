@@ -68,6 +68,8 @@ The chmod 600 command sets the file permissions so that only the file owner (you
 ---
 
 ### Finally check and run the playbook
+Make sure to place all these files in your **home** to let the playbook run.  
+
 ```
 ansible-navigator run -m stdout myplaybook.yml --pae=false --vault-password-file=mypass --check
 ```
