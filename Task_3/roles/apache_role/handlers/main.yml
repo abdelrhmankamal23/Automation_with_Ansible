@@ -1,0 +1,9 @@
+---
+# handlers file for apache_role
+
+- name: Backup httpd configuration
+  fetch:
+    src: "{{ httpd_conf }}"
+    dest: "{{ backup_dir }}"
+    flat: no
+  ignore_errors: true
